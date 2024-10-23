@@ -12,7 +12,7 @@ import DetailView from './components/details/DetailView';
 import Update from './components/create/Update';
 import About from './components/about/About';
 import Contact from './components/contact/Contact';
-import Login from './components/accounts/login';
+import Login from './components/accounts/Login';
 
 const PrivateRoute = ({ isAuthenticated, ...props }) => {
   const token = sessionStorage.getItem('accessToken');
