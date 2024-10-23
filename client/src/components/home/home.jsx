@@ -2,7 +2,7 @@
 import { Grid2 } from '@mui/material';
 
 //components
-import Banner from '../banner/Banner'
+import Banner from '../banner/Banner.jsx'
 import Categories from './Categories';
 import Posts from './post/Posts';
 
