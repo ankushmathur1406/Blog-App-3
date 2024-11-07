@@ -3,7 +3,7 @@ import { GridFsStorage } from 'multer-gridfs-storage';
 //import grid from 'multer-gridfs-storage';
 import mongoose from 'mongoose';
 
-const url = 'http://localhost:8000';
+const url = '';
 
 
 let gfs, gridfsBucket;
