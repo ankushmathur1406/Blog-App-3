@@ -7,11 +7,11 @@ import User from '../model/user.js';
 
 dotenv.config();
 
-export const singupUser = async (request, response) => {
+export const signupUser = async (request, response) => {
     try {
         // const salt = await bcrypt.genSalt();
         // const hashedPassword = await bcrypt.hash(request.body.password, salt);
-        const hashedPassword = await bcryptjs.hash(request.body.password, 10);
+        const hashedPassword = await bcrypt.hash(request.body.password, 10);
 
         const user = { username: request.body.username, name: request.body.name, password: hashedPassword }
 
@@ -56,3 +56,72 @@ export const logoutUser = async (request, response) => {
 
     response.status(204).json({ msg: 'logout successfull' });
 }
+
+
+// import crypto from 'crypto';
+// import jwt from 'jsonwebtoken';
+// import dotenv from 'dotenv';
+// import Token from '../model/token.js';
+// import User from '../model/user.js';
+
+// dotenv.config();
+
+// const iterations = 100000;
+// const keylen = 64;
+// const digest = 'sha512';
+
+// export const signupUser = async (request, response) => {
+//     try {
+//         const salt = crypto.randomBytes(16).toString('hex');
+//         crypto.pbkdf2(request.body.password, salt, iterations, keylen, digest, (err, derivedKey) => {
+//             if (err) throw err;
+//             const hashedPassword = derivedKey.toString('hex');
+//             const user = { username: request.body.username, name: request.body.name, password: hashedPassword, salt: salt };
+
+//             const newUser = new User(user);
+//             newUser.save().then(() => {
+//                 return response.status(200).json({ msg: 'Signup successful' });
+//             }).catch(error => {
+//                 return response.status(500).json({ msg: 'Error while signing up user' });
+//             });
+//         });
+//     } catch (error) {
+//         return response.status(500).json({ msg: 'Error while signing up user' });
+//     }
+// }
+
+// export const loginUser = async (request, response) => {
+//     let user = await User.findOne({ username: request.body.username });
+//     if (!user) {
+//         return response.status(400).json({ msg: 'Username does not match' });
+//     }
+
+//     try {
+//         crypto.pbkdf2(request.body.password, user.salt, iterations, keylen, digest, (err, derivedKey) => {
+//             if (err) throw err;
+//             const hashedPassword = derivedKey.toString('hex');
+//             if (hashedPassword === user.password) {
+//                 const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_SECRET_KEY, { expiresIn: '15m' });
+//                 const refreshToken = jwt.sign(user.toJSON(), process.env.REFRESH_SECRET_KEY);
+
+//                 const newToken = new Token({ token: refreshToken });
+//                 newToken.save().then(() => {
+//                     response.status(200).json({ accessToken: accessToken, refreshToken: refreshToken, name: user.name, username: user.username });
+//                 }).catch(error => {
+//                     response.status(500).json({ msg: 'Error while saving token' });
+//                 });
+//             } else {
+//                 response.status(400).json({ msg: 'Password does not match' });
+//             }
+//         });
+//     } catch (error) {
+//         response.status(500).json({ msg: 'Error while logging in the user' });
+//     }
+// }
+
+// export const logoutUser = async (request, response) => {
+//     const token = request.body.token;
+//     await Token.deleteOne({ token: token });
+
+//     response.status(204).json({ msg: 'Logout successful' });
+// }
